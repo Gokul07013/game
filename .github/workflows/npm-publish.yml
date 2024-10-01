@@ -1,4 +1,4 @@
-name: Node.js CI
+vname: Node.js CI
 
 on: [push]
 
@@ -6,7 +6,7 @@ env:
   REPOSITORY_NAME: gokul4/actions
   VERSION: v1.0.0
   BUILD_NUMBER: ${{ github.run_number }}-${{ github.ref_name }}
-  IMAGE_TAG: ${{ REPOSITORY_NAME }}:${{ VERSION }}-b${{ BUILD_NUMBER }}
+  IMAGE_TAG: ${{ env.REPOSITORY_NAME }}:${{ env.VERSION }}-b${{ env.BUILD_NUMBER }}
 
 jobs:
   build:
