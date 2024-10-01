@@ -1,6 +1,9 @@
-vname: Node.js CI
+name: Node.js CI
 
-on: [push]
+on: 
+  push:
+    branches:
+      - main
 
 env:
   REPOSITORY_NAME: gokul4/actions
