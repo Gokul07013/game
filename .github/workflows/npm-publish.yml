@@ -1,8 +1,16 @@
 name: Node.js CI
 
 on:
-  release:
-    types: [published]
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment to run tests against'
+        type: environment
+        required: true
+        options:
+        - DEV
+        - PROD
+        - QA
 
 env:
   REPOSITORY_NAME: gokul4/actions
