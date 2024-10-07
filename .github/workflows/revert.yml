@@ -49,7 +49,7 @@ jobs:
         run: |
           # Condition
           if [[ "${{ github.event.inputs.platform }}" == "dev" ]]; then
-            ssh -i ${{ secrets.SSH_KEY }} ${{ USER_NAME }}@${{IP}}
+            ssh -i ${{ secrets.SSH_KEY }} ${{ secrets.USER_NAME }}@${{ secrets.IP }}
             docker pull ${{env.REPO}}:$SELECTED_TAG
           elif [[ "${{ github.event.inputs.environment }}" == "latest-1" ]]; then
             SELECTED_TAG=${TAGS[1]}
