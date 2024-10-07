@@ -21,10 +21,10 @@ jobs:
     steps:
       - name: Reverting to selected version
         run: |
-          # Fetch the tags directly from Docker Hub and store in an array
+          # Fetch the tag version
           TAGS=($(curl -s "https://registry.hub.docker.com/v2/repositories/gokul4/qa/tags?page_size=100" | jq -r '.results[].name'))
 
-          # Check the input and assign the selected tag based on the input
+          # Condition
           if [[ "${{ github.event.inputs.environment }}" == "latest" ]]; then
             SELECTED_TAG=${TAGS[0]}
           elif [[ "${{ github.event.inputs.environment }}" == "latest-1" ]]; then
@@ -34,6 +34,6 @@ jobs:
           else
             echo "Failed"
           fi
-          
-      - name: Pulling the docker image 
-        run: docker pull $REPO:$SELECTED_TAG
+
+          #Pull
+          docker pull ${env.REPO}:$SELECTED_TAG
