@@ -1,5 +1,5 @@
 name: Reverting Docker Images
-
+ 
 on:
   workflow_dispatch:
     inputs:
@@ -11,30 +11,29 @@ on:
           - dev
           - qa
           - prod
-
-    
       environment:
-        description: 'Select the dcoker image version to deploy'
+        description: 'Select the docker image version to deploy'
         required: true
         type: choice
         options:
           - latest
           - latest-1
           - latest-2
-  
+ 
 env:
   REPO: ${{ format('gokul4/{0}', github.event.inputs.platform) }}
-
+ 
 jobs:
   revert:
     runs-on: ubuntu-latest
     steps:
       - name: Reverting to selected version
+        id: revert
         run: |
           # Fetch the tag version
-          TAGS=($(curl -s "https://registry.hub.docker.com/v2/repositories/${{env.REPO}}/tags?page_size=100" | jq -r '.results[].name'))
-
-          # Condition
+          TAGS=($(curl -s "https://registry.hub.docker.com/v2/repositories/${{ env.REPO }}/tags?page_size=100" | jq -r '.results[].name'))
+ 
+        
           if [[ "${{ github.event.inputs.environment }}" == "latest" ]]; then
             SELECTED_TAG=${TAGS[0]}
           elif [[ "${{ github.event.inputs.environment }}" == "latest-1" ]]; then
@@ -42,19 +41,21 @@ jobs:
           elif [[ "${{ github.event.inputs.environment }}" == "latest-2" ]]; then
             SELECTED_TAG=${TAGS[2]}
           else
-            echo "Failed"
+            echo "Failed to select tag"
+            exit 1
           fi
-
+          echo "Selected tag: $SELECTED_TAG"
+ 
       - name: Deploy to AWS EC2 instance
         env:
-          PRIVATE_KEY: ${{ secrets.SSH_KEY }}  
-          HOSTNAME: ${{ secrets.IP }}           
-          USER_NAME: ${{ secrets.USER_NAME }}   
+          PRIVATE_KEY: ${{ secrets.SSH_KEY }}
+          HOSTNAME: ${{ secrets.IP }}
+          USER_NAME: ${{ secrets.USER_NAME }}
         run: |
           echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
+          mkdir -p ~/.ssh
           ssh-keyscan -H $HOSTNAME >> ~/.ssh/known_hosts
-          ssh -o StrictHostKeyChecking=no -i private_key ${USER_NAME}@${HOSTNAME} << EOF
+          ssh -o StrictHostKeyChecking=no -i private_key ${USER_NAME}@${HOSTNAME} << 'EOF'
             echo "Logged into EC2 successfully!"
- 
-           
           EOF
+
