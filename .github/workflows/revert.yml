@@ -52,7 +52,6 @@ jobs:
             PRIVATE_KEY: ${{ secrets.SSH_KEY }}
             HOSTNAME: ${{ secrets.IP }}
             USER_NAME: ${{ secrets.USER_NAME }} 
-            SELECTEDTAG : ${{ env.SELECTED_TAG }}
         run: |
           ssh -i ${{ secrets.SSH_KEY }} ${{ secrets.USER_NAME }}@${{ secrets.IP }}
 
