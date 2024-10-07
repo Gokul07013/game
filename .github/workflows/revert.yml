@@ -8,9 +8,9 @@ on:
         required: true
         type: choice
         options:
-          - latest
-          - latest-1
-          - latest-2
+          - dev
+          - qa
+          - prod
 
     
       environment:
@@ -21,8 +21,6 @@ on:
           - latest
           - latest-1
           - latest-2
-  
-
   
 env:
   REPO: ${{ format('gokul4/{0}', github.event.inputs.platform) }}
