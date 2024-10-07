@@ -3,7 +3,7 @@ name: Reverting Docker Images
 on:
   workflow_dispatch:
     inputs:
-      environment:
+      platform:
         description: 'Select the environment to deploy'
         required: true
         type: choice
@@ -12,8 +12,20 @@ on:
           - latest-1
           - latest-2
 
+    
+      environment:
+        description: 'Select the dcoker image version to deploy'
+        required: true
+        type: choice
+        options:
+          - latest
+          - latest-1
+          - latest-2
+  
+
+  
 env:
-  REPO: gokul4/dev
+  REPO: ${{ format('gokul4/{0}', github.event.inputs.platform) }}
 
 jobs:
   revert:
