@@ -57,5 +57,7 @@ jobs:
           ssh-keyscan -H $HOSTNAME >> ~/.ssh/known_hosts
           ssh -o StrictHostKeyChecking=no -i private_key ${USER_NAME}@${HOSTNAME} << 'EOF'
             echo "Logged into EC2 successfully!"
-          EOF
+            docker pull ${{ env.REPO }}:${ SELECTED_TAG }
+          
+          EOF 
 
