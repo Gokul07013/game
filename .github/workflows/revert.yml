@@ -45,19 +45,16 @@ jobs:
             echo "Failed"
           fi
 
-      - name: Deployment to the server
+      - name: Deploy to AWS EC2 instance
         env:
-          PRIVATE_KEY: ${{ secrets.SSH_KEY }}
-          HOSTNAME: ${{ secrets.IP }}
-          USER_NAME: ${{ secrets.USER_NAME }} 
+          PRIVATE_KEY: ${{ secrets.SSH_KEY }}  
+          HOSTNAME: ${{ secrets.IP }}           
+          USER_NAME: ${{ secrets.USER_NAME }}   
         run: |
-          echo "$PRIVATE_KEY" | tr -d '\r' > private_key && chmod 600 private_key
+          echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
+          ssh-keyscan -H $HOSTNAME >> ~/.ssh/known_hosts
+          ssh -o StrictHostKeyChecking=no -i private_key ${USER_NAME}@${HOSTNAME} << EOF
+            echo "Logged into EC2 successfully!"
  
-        
-          ssh -t -o StrictHostKeyChecking=no -i private_key ${USER_NAME}@${HOSTNAME} << EOF
-            echo "Deploying Docker image version $SELECTED_TAG to ${HOSTNAME}"
-          EOF >> 
-
-              
-         
-          
+           
+          EOF
