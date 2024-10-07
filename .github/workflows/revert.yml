@@ -22,7 +22,7 @@ jobs:
       - name: Reverting to selected version
         run: |
           # Fetch the tag version
-          TAGS=($(curl -s "https://registry.hub.docker.com/v2/repositories/gokul4/qa/tags?page_size=100" | jq -r '.results[].name'))
+          TAGS=($(curl -s "https://registry.hub.docker.com/v2/repositories/${{env.REPO}}/tags?page_size=100" | jq -r '.results[].name'))
 
           # Condition
           if [[ "${{ github.event.inputs.environment }}" == "latest" ]]; then
