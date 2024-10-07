@@ -29,8 +29,8 @@ jobs:
           elif [[ "${{ github.event.inputs.environment }}" == "latest-2" ]]; then
             SELECTED_TAG=${TAGS[2]}
           else
-            echo "Invalid selection!"
-            exit 1
+            echo "Failed"
           fi
+          
       - name: Pulling the dcoker image 
         run: docker pull gokul4/prod:$SELECTED_TAG
