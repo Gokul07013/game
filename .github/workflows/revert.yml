@@ -36,4 +36,4 @@ jobs:
           fi
 
           #Pull
-          docker pull ${env.REPO}:$SELECTED_TAG
+          docker pull ${{env.REPO}}:$SELECTED_TAG
