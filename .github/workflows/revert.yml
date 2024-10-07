@@ -18,9 +18,19 @@ jobs:
     steps:
       - name: Reverting to selected version
         run: |
-          if [[ "$github.event.inputs.environment" == "latest" ]]; then
-            curl -s https://registry.hub.docker.com/v2/repositories/gokul4/qa/tags?page_size=100 | jq -r '.results[0].name' >> "$tag"
-            echo "$tag"
-            docker pull gokul4/prod:$tag          
-          fi  
-        
+          # Fetch the tags directly from Docker Hub and store in an array
+          TAGS=($(curl -s "https://registry.hub.docker.com/v2/repositories/gokul4/qa/tags?page_size=100" | jq -r '.results[].name'))
+
+          # Check the input and assign the selected tag based on the input
+          if [[ "${{ github.event.inputs.environment }}" == "latest" ]]; then
+            SELECTED_TAG=${TAGS[0]}
+          elif [[ "${{ github.event.inputs.environment }}" == "latest-1" ]]; then
+            SELECTED_TAG=${TAGS[1]}
+          elif [[ "${{ github.event.inputs.environment }}" == "latest-2" ]]; then
+            SELECTED_TAG=${TAGS[2]}
+          else
+            echo "Invalid selection!"
+            exit 1
+          fi
+      - name: Pulling the dcoker image 
+          docker pull gokul4/prod:$SELECTED_TAG
