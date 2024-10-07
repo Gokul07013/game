@@ -33,4 +33,4 @@ jobs:
             exit 1
           fi
       - name: Pulling the dcoker image 
-          docker pull gokul4/prod:$SELECTED_TAG
+        run: docker pull gokul4/prod:$SELECTED_TAG
