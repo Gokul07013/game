@@ -45,5 +45,19 @@ jobs:
             echo "Failed"
           fi
 
+      - name: Deployment to the server 
+        run: |
+          # Condition
+          if [[ "${{ github.event.inputs.platform }}" == "dev" ]]; then
+            ssh -i ${{ secrets.SSH_KEY }} ${{ USER_NAME }}@${{IP}}
+            docker pull ${{env.REPO}}:$SELECTED_TAG
+          elif [[ "${{ github.event.inputs.environment }}" == "latest-1" ]]; then
+            SELECTED_TAG=${TAGS[1]}
+          elif [[ "${{ github.event.inputs.environment }}" == "latest-2" ]]; then
+            SELECTED_TAG=${TAGS[2]}
+          else
+            echo "Failed"
+          fi  
           #Pull
           docker pull ${{env.REPO}}:$SELECTED_TAG
+          
