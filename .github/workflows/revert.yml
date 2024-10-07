@@ -45,6 +45,8 @@ jobs:
             echo "Failed"
           fi
 
+          echo "SELECTED_TAG=${SELECTED_TAG}" >> $GITHUB_ENV
+
       - name: Deployment to the server 
         env:
             PRIVATE_KEY: ${{ secrets.SSH_KEY }}
