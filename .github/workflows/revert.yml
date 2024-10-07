@@ -12,6 +12,9 @@ on:
           - latest-1
           - latest-2
 
+env:
+  REPO: gokul4/dev
+
 jobs:
   revert:
     runs-on: ubuntu-latest
@@ -32,5 +35,5 @@ jobs:
             echo "Failed"
           fi
           
-      - name: Pulling the dcoker image 
-        run: docker pull gokul4/prod:$SELECTED_TAG
+      - name: Pulling the docker image 
+        run: docker pull $REPO:$SELECTED_TAG
