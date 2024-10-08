@@ -45,7 +45,17 @@ jobs:
             echo "Failed"
           fi
 
-            
-          #Pull
-          docker pull ${{env.REPO}}:$SELECTED_TAG
+          echo "TAG=$SELECTED_TAG" >> $GITHUB_ENV
+
+      - name: executing remote ssh commands 
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.IP }}
+          username: ${{ secrets.USER_NAME }}
+          key: ${{ secrets.SSH_KEY }}
+          script: |
+                    docker pull ${{env.REPO}}:${{env.TAG}}
+                    
+                          
+         
           
