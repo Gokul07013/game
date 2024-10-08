@@ -15,4 +15,4 @@ jobs:
         username: ${{ secrets.USER_NAME }}
         key: ${{ secrets.SSH_KEY }}
         script: |
-                    echo "Hello"
+                    docker -h
