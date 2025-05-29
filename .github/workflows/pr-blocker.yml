@@ -1,0 +1,22 @@
+name: SonarQube-Qualitygate-Check
+
+on:
+  pull_request:
+    branches : [main]
+
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+
+    steps: 
+    - name: print hello
+      run: |
+        echo "Test initiated successfully" 
+
+    - name: finish     
+      run: echo "test passed"
+      
+    
+  
